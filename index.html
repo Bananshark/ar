@@ -57,6 +57,10 @@
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
         /* 顶部导航栏 */
@@ -121,12 +125,14 @@
             width: 100%;
             height: calc(100vh - 64px);
             overflow: hidden;
+            background: var(--bg-primary);
         }
 
         #ar-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform: scaleX(-1); /* 镜像翻转，更自然的体验 */
         }
 
         #ar-canvas {
@@ -136,6 +142,7 @@
             width: 100%;
             height: 100%;
             z-index: 2;
+            touch-action: none; /* 防止触摸滚动 */
         }
 
         /* 文物信息卡片 */
@@ -457,11 +464,52 @@
             to { transform: rotate(360deg); }
         }
 
-        /* 移动端适配 */
+        /* 响应式设计 - 平板 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .top-nav {
+                height: 60px;
+                padding: 0 var(--space-5);
+            }
+
+            #ar-container {
+                top: 60px;
+                height: calc(100vh - 60px);
+            }
+
+            .artifact-info-card {
+                width: 340px;
+                max-height: 55vh;
+            }
+
+            .chat-panel {
+                width: 380px;
+                max-height: 55vh;
+            }
+
+            .model-menu {
+                width: 300px;
+                max-height: 55vh;
+            }
+        }
+
+        /* 响应式设计 - 移动端 */
         @media (max-width: 768px) {
             .top-nav {
                 height: 56px;
                 padding: 0 var(--space-4);
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-buttons {
+                gap: var(--space-2);
+            }
+
+            .nav-btn {
+                padding: var(--space-2) var(--space-3);
+                font-size: 13px;
             }
 
             #ar-container {
@@ -469,11 +517,31 @@
                 height: calc(100vh - 56px);
             }
 
+            #ar-video,
+            #ar-canvas {
+                object-fit: cover;
+            }
+
             .artifact-info-card {
                 width: calc(100% - var(--space-4) * 2);
                 right: var(--space-4);
                 bottom: var(--space-4);
                 max-height: 40vh;
+                padding: var(--space-4);
+            }
+
+            .artifact-header {
+                gap: var(--space-3);
+                margin-bottom: var(--space-3);
+            }
+
+            .artifact-thumbnail {
+                width: 60px;
+                height: 60px;
+            }
+
+            .artifact-name {
+                font-size: 18px;
             }
 
             .chat-panel {
@@ -486,6 +554,98 @@
             .chat-toggle {
                 bottom: var(--space-4);
                 left: var(--space-4);
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
+            .model-menu-btn {
+                right: var(--space-4);
+                top: 70px;
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .model-menu {
+                width: calc(100% - var(--space-4) * 2);
+                right: var(--space-4);
+                top: 70px;
+                max-height: 50vh;
+            }
+
+            .model-menu-item {
+                padding: var(--space-3);
+            }
+
+            .model-menu-thumbnail {
+                width: 50px;
+                height: 50px;
+            }
+
+            .status-overlay {
+                top: 70px;
+                left: var(--space-4);
+                right: var(--space-4);
+                transform: none;
+                width: auto;
+                padding: var(--space-3) var(--space-4);
+            }
+        }
+
+        /* 响应式设计 - 小屏手机 */
+        @media (max-width: 480px) {
+            .top-nav {
+                height: 52px;
+                padding: 0 var(--space-3);
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .nav-btn {
+                padding: 6px var(--space-2);
+                font-size: 12px;
+            }
+
+            .artifact-info-card {
+                max-height: 35vh;
+                padding: var(--space-3);
+            }
+
+            .chat-panel {
+                max-height: 45vh;
+            }
+
+            .model-menu {
+                max-height: 45vh;
+            }
+        }
+
+        /* 响应式设计 - 横屏模式 */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .top-nav {
+                height: 48px;
+            }
+
+            #ar-container {
+                top: 48px;
+                height: calc(100vh - 48px);
+            }
+
+            .artifact-info-card {
+                max-height: calc(100vh - 60px);
+                bottom: var(--space-3);
+            }
+
+            .chat-panel {
+                max-height: calc(100vh - 60px);
+                bottom: var(--space-3);
+            }
+
+            .model-menu {
+                max-height: calc(100vh - 60px);
             }
         }
 
@@ -936,13 +1096,34 @@
                 
                 // 检查MindAR库是否加载
                 if (typeof MindARThree === 'undefined') {
-                    throw new Error('MindAR库未加载，请检查网络连接或CDN');
+                    // 尝试重新加载MindAR库
+                    utils.warn('MindAR库未加载，尝试重新加载...');
+                    await new Promise((resolve) => {
+                        const script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-three.prod.js';
+                        script.onload = resolve;
+                        script.onerror = () => {
+                            throw new Error('MindAR库加载失败，请检查网络连接');
+                        };
+                        document.head.appendChild(script);
+                    });
+                    
+                    // 再次检查
+                    if (typeof MindARThree === 'undefined') {
+                        throw new Error('MindAR库加载失败，请检查网络连接或使用测试模式');
+                    }
                 }
                 
                 // 检查容器元素
                 const container = elements.arContainer;
                 if (!container) {
                     throw new Error('AR容器元素未找到');
+                }
+                
+                // 检查容器尺寸
+                if (container.clientWidth === 0 || container.clientHeight === 0) {
+                    utils.warn('容器尺寸为0，等待布局完成...');
+                    await new Promise(resolve => setTimeout(resolve, 100));
                 }
                 
                 // 请求摄像头权限
@@ -987,14 +1168,42 @@
                 // 设置视频流
                 video.srcObject = stream;
                 
-                // 等待视频准备就绪
+                // 等待视频准备就绪（改进版本）
                 await new Promise((resolve, reject) => {
-                    video.onloadedmetadata = () => {
+                    const timeout = setTimeout(() => {
+                        reject(new Error('视频加载超时'));
+                    }, 5000);
+                    
+                    const onLoaded = () => {
+                        clearTimeout(timeout);
+                        video.removeEventListener('loadedmetadata', onLoaded);
+                        video.removeEventListener('error', onError);
                         video.play()
-                            .then(resolve)
+                            .then(() => {
+                                // 确保视频正在播放
+                                if (video.paused) {
+                                    reject(new Error('视频播放失败'));
+                                } else {
+                                    resolve();
+                                }
+                            })
                             .catch(reject);
                     };
-                    video.onerror = reject;
+                    
+                    const onError = (e) => {
+                        clearTimeout(timeout);
+                        video.removeEventListener('loadedmetadata', onLoaded);
+                        video.removeEventListener('error', onError);
+                        reject(new Error('视频加载错误'));
+                    };
+                    
+                    if (video.readyState >= 2) {
+                        // 视频已经加载
+                        onLoaded();
+                    } else {
+                        video.addEventListener('loadedmetadata', onLoaded);
+                        video.addEventListener('error', onError);
+                    }
                 });
 
                 // 获取AR配置
@@ -1013,6 +1222,7 @@
                 }
 
                 // 初始化MindAR
+                updateStatus("正在初始化MindAR引擎...");
                 mindarThree = new MindARThree.MindARThree({
                     container: container,
                     imageTargetSrc: imageTargetSrc,
@@ -1021,6 +1231,9 @@
                     uiScanning: 'no',
                     uiError: 'no'
                 });
+
+                // 等待MindAR初始化完成
+                await new Promise(resolve => setTimeout(resolve, 100));
 
                 const { renderer: arRenderer, scene: arScene, camera: arCamera } = mindarThree;
                 if (!arRenderer || !arScene || !arCamera) {
@@ -1034,13 +1247,30 @@
                 // 添加灯光
                 createSceneLights();
 
-                // 启动AR（增加超时处理）
-                const startPromise = mindarThree.start();
-                const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('AR启动超时')), 10000)
-                );
+                // 启动AR（增加超时处理和重试机制）
+                updateStatus("正在启动AR系统...");
+                let retryCount = 0;
+                const maxRetries = 2;
                 
-                await Promise.race([startPromise, timeoutPromise]);
+                while (retryCount <= maxRetries) {
+                    try {
+                        const startPromise = mindarThree.start();
+                        const timeoutPromise = new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('AR启动超时')), 15000)
+                        );
+                        
+                        await Promise.race([startPromise, timeoutPromise]);
+                        break; // 成功启动，退出循环
+                    } catch (startError) {
+                        retryCount++;
+                        if (retryCount > maxRetries) {
+                            throw startError;
+                        }
+                        utils.warn(`AR启动失败，重试 ${retryCount}/${maxRetries}:`, startError);
+                        updateStatus(`AR启动失败，正在重试 ${retryCount}/${maxRetries}...`);
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
                 
                 updateStatus("AR系统已启动，请将摄像头对准识别图");
 
@@ -1566,23 +1796,27 @@
             }
 
             // 检查是否有识别图文件，如果没有则使用测试模式
-            try {
-                const response = await fetch('targets/targets.mind', { method: 'HEAD' });
-                if (response.ok) {
-                    // 有识别图，初始化AR
-                    initAR();
-                } else {
-                    // 没有识别图，使用测试模式
-                    utils.log('未找到识别图文件，使用测试模式');
-                    updateStatus("未找到识别图，切换到测试模式...");
+            // 延迟检查，确保页面完全加载
+            setTimeout(async () => {
+                try {
+                    const response = await fetch('targets/targets.mind', { method: 'HEAD' });
+                    if (response.ok) {
+                        // 有识别图，初始化AR
+                        utils.log('找到识别图文件，启动AR模式');
+                        await initAR();
+                    } else {
+                        // 没有识别图，使用测试模式
+                        utils.log('未找到识别图文件，使用测试模式');
+                        updateStatus("未找到识别图，切换到测试模式...");
+                        setTimeout(() => initTestMode(), 1000);
+                    }
+                } catch (error) {
+                    // 无法访问识别图，使用测试模式
+                    utils.log('无法访问识别图文件，使用测试模式:', error);
+                    updateStatus("无法访问识别图，切换到测试模式...");
                     setTimeout(() => initTestMode(), 1000);
                 }
-            } catch (error) {
-                // 无法访问识别图，使用测试模式
-                utils.log('无法访问识别图文件，使用测试模式:', error);
-                updateStatus("无法访问识别图，切换到测试模式...");
-                setTimeout(() => initTestMode(), 1000);
-            }
+            }, 500);
         });
     </script>
 </body>
