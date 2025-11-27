@@ -1,0 +1,105 @@
+{
+  "api": {
+    "url": "https://dashscope.aliyuncs.com/api/v1/apps/d93cb258746a4c25a49c6c0a8edb0ead/completion",
+    "key": "sk-3dac8516f796455f8f936e144b8af931",
+    "appId": "d93cb258746a4c25a49c6c0a8edb0ead",
+    "description": "AI API配置，可在界面设置中配置"
+  },
+  "ar": {
+    "imageTargetSrc": "targets/targets.mind",
+    "maxTrack": 1,
+    "description": "AR跟踪配置，targets.mind需要通过MindAR编译工具生成"
+  },
+  "artifacts": [
+    {
+      "id": 1,
+      "name": "商代青铜鼎",
+      "nameEn": "Shang Dynasty Bronze Ding",
+      "dynasty": "商代",
+      "material": "青铜",
+      "size": "高30cm，口径25cm",
+      "description": "商代青铜鼎是古代礼器的重要代表，体现了商代高超的青铜铸造技术。鼎身饰有精美的饕餮纹，是商代青铜艺术的典型作品。",
+      "history": "商代（约公元前1600-1046年）是中国青铜器发展的鼎盛时期。青铜鼎作为礼器，在祭祀和宴飨中占有重要地位，是权力和地位的象征。这件青铜鼎采用范铸法制作，工艺精湛，反映了商代青铜铸造技术的高超水平。",
+      "craftsmanship": "采用范铸法（失蜡法）制作。首先制作泥模，然后在泥模上翻制外范和内范，将内外范合拢后浇注青铜液，冷却后去除范模，再进行打磨和装饰。鼎身装饰采用浮雕和线刻相结合的手法，饕餮纹线条流畅，层次分明。",
+      "culturalValue": "商代青铜鼎不仅是实用器物，更是礼制文化的载体。它体现了商代社会的等级制度、宗教信仰和审美观念，是研究商代历史、文化、艺术的重要实物资料。",
+      "modelUrl": "model/kid-hello.glb",
+      "thumbnailUrl": "https://via.placeholder.com/200x200/d4af37/ffffff?text=商代青铜鼎",
+      "markerImageIndex": 0,
+      "tags": ["青铜器", "礼器", "商代", "鼎"]
+    },
+    {
+      "id": 2,
+      "name": "唐代三彩陶俑",
+      "nameEn": "Tang Dynasty Tri-color Pottery Figurine",
+      "dynasty": "唐代",
+      "material": "陶",
+      "size": "高45cm",
+      "description": "唐代三彩陶俑是盛唐时期陶瓷艺术的杰出代表，以黄、绿、白三色为主，色彩绚丽，造型生动。",
+      "history": "唐代（618-907年）是中国封建社会的鼎盛时期，文化艺术空前繁荣。三彩陶俑主要用于陪葬，反映了唐代社会的审美趣味和生活方式。这件陶俑制作精美，人物形象栩栩如生，是唐代陶瓷工艺的典型代表。",
+      "craftsmanship": "采用二次烧制工艺。首先用白色粘土制作胎体，经第一次烧制后，再施以含铜、铁、钴等金属氧化物的釉料，进行第二次烧制。在烧制过程中，釉料中的金属氧化物发生化学反应，形成黄、绿、白等丰富的色彩。",
+      "culturalValue": "三彩陶俑是唐代厚葬文化的产物，不仅具有艺术价值，更是研究唐代社会生活、服饰、习俗的重要资料。它体现了唐代开放包容的文化精神和精湛的工艺水平。",
+      "modelUrl": "model/kid-hello.glb",
+      "thumbnailUrl": "https://via.placeholder.com/200x200/00a86b/ffffff?text=唐代三彩",
+      "markerImageIndex": 1,
+      "tags": ["陶瓷", "唐代", "三彩", "陶俑"]
+    },
+    {
+      "id": 3,
+      "name": "宋代青花瓷瓶",
+      "nameEn": "Song Dynasty Blue and White Porcelain Vase",
+      "dynasty": "宋代",
+      "material": "瓷",
+      "size": "高35cm，口径12cm",
+      "description": "宋代青花瓷瓶造型优雅，釉色莹润，青花图案精美，体现了宋代瓷器制作的最高水平。",
+      "history": "宋代（960-1279年）是中国瓷器发展的重要时期，制瓷技术达到新的高度。青花瓷在元代达到鼎盛，但宋代已有青花瓷的雏形。这件青花瓷瓶釉色纯净，青花发色稳定，是宋代瓷器的精品。",
+      "craftsmanship": "采用高岭土制作胎体，经过精细淘洗和练泥，胎质细腻。在胎体上绘制青花图案，然后施以透明釉，在高温下一次烧成。青花料采用含钴的矿物，在还原焰中烧制，呈现蓝色。",
+      "culturalValue": "宋代瓷器以其优雅的造型、纯净的釉色和精美的装饰，成为世界陶瓷史上的经典。青花瓷瓶不仅具有实用价值，更是艺术品，体现了宋代文人的审美情趣。",
+      "modelUrl": "model/kid-hello.glb",
+      "thumbnailUrl": "https://via.placeholder.com/200x200/6e8efb/ffffff?text=宋代青花",
+      "markerImageIndex": 2,
+      "tags": ["瓷器", "宋代", "青花", "瓷瓶"]
+    }
+  ],
+  "ui": {
+    "title": "AR文物介绍系统",
+    "theme": "dark",
+    "language": "zh-CN",
+    "showModelMenu": true,
+    "modelMenuPosition": "right"
+  },
+  "model": {
+    "autoScale": true,
+    "scaleMultiplier": 1,
+    "defaultPosition": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "defaultRotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "camera": {
+    "fov": 75,
+    "near": 0.1,
+    "far": 1000
+  },
+  "light": {
+    "ambient": {
+      "color": "#ffffff",
+      "intensity": 0.6
+    },
+    "directional": {
+      "color": "#ffffff",
+      "intensity": 0.8,
+      "position": {
+        "x": 5,
+        "y": 10,
+        "z": 7
+      }
+    }
+  }
+}
+
